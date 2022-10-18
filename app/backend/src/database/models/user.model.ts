@@ -1,9 +1,9 @@
-import { DataTypes, Model } from 'sequelize';
+import { INTEGER, STRING, Model } from 'sequelize';
 import db from '.';
 // import OtherModel from './OtherModel';
 
 class User extends Model {
-  public id!: number;
+  public id?: number;
   public username!: string;
   public role!: string;
   public email!: string;
@@ -12,11 +12,27 @@ class User extends Model {
 
 User.init({
   // ... Campos
-  id: DataTypes.NUMBER,
-  username: DataTypes.STRING,
-  role: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
+  id: {
+    type: INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  username: {
+    type: STRING,
+    allowNull: false,
+  },
+  role: {
+    type: STRING,
+    allowNull: false,
+  },
+  email: {
+    type: STRING,
+    allowNull: false,
+  },
+  password: {
+    type: STRING,
+    allowNull: false,
+  },
 }, {
   // ... Outras configs
   underscored: true,

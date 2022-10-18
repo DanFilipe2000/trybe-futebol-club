@@ -1,12 +1,21 @@
-// import { Request, Response } from 'express';
-// import ILogin from '../interfaces/ILogin';
-// import UserService from '../services/user.service';
+import { Request, Response } from 'express';
+import IUserService from '../interfaces/IUserService';
+import ILogin from '../interfaces/ILogin';
 
-// export default class UserController {
-//   constructor(private userService: UserService) {}
+export default class UserController {
+  constructor(private userService: IUserService) {}
 
-//   public async create(req: Request, res: Response) {
-//     const result = await this.userService.get(req.body as ILogin);
-//     return res.status(201).json(result);
-//   }
-// }
+  public async login(req: Request, res: Response) {
+    // try {
+    //   const { email, password } = req.body;
+    //   const result = await this.userService.login({ email, password } as ILogin);
+    //   res.status(200).json({ token: result });
+    // } catch (err: Error) {
+    //   res.status(400).json({ message: err.message });
+    // }
+
+    const { email, password } = req.body;
+    const result = await this.userService.login({ email, password } as ILogin);
+    res.status(200).json({ token: result });
+  }
+}
