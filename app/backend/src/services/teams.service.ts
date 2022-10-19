@@ -7,4 +7,9 @@ export default class TeamsService {
     const teams: Team[] = await Team.findAll();
     return teams;
   };
+
+  public findByPk = async (id: number): Promise<Team | null> => {
+    const team: Team | null = await Team.findByPk(id);
+    return team;
+  };
 }

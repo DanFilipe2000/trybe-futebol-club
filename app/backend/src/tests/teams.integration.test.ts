@@ -12,6 +12,7 @@ import teamsMock from './mock/teams.mock';
 // import BCrypt from '../services/bcrypt.service';
 // import UserService from '../services/user.service';
 import Team from '../database/models/team.model';
+import ITeam from '../interfaces/ITeam';
 
 chai.use(chaiHttp);
 
@@ -44,7 +45,7 @@ describe('teamsTest', () => {
   //   expect(...)
   // });
   describe('/teams', () => {
-    describe('Na rota com o método GET retorna os times com o status 200', () => {
+    describe('Na rota /teams com o método GET retorna os times com o status 200', () => {
       beforeEach(() => {
         sinon.stub(Team, 'findAll').resolves(teamsMock as Team[]);
       })
@@ -52,6 +53,18 @@ describe('teamsTest', () => {
         const response = await chai.request(app).get('/teams');
         chai.expect(response.status).to.be.eq(200);
       }) 
+    })
+
+    describe('Na rota /teams/:id com o metodo get retorna o time referente ao id', () => {
+      beforeEach(() => {
+        sinon.restore();
+        sinon.stub(Team, 'findByPk').resolves({ id: 1, teamName: 'Avaí/Kindermann'} as Team)
+      })
+
+      it('Retorna o time de acordo com o parâmetro', async () => {
+        const response = await chai.request(app).get('/teams/1');
+        chai.expect(response.status).to.be.eq(200);
+      })
     })
   })
 })
