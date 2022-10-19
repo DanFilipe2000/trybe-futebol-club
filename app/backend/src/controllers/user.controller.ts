@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import IUserService from '../interfaces/IUserService';
 import ILogin from '../interfaces/ILogin';
+import UserService from '../services/user.service';
 
 export default class UserController {
-  constructor(private userService: IUserService) {}
+  constructor(private userService = new UserService()) {}
 
   public async login(req: Request, res: Response) {
     // try {

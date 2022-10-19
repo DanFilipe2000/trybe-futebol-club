@@ -57,26 +57,34 @@ describe('userTests', () => {
   //   expect(...)
   // });
     describe('/login', () => {
-      beforeEach(() => {
-        sinon.stub(User, "findOne").resolves(userMock as User);
-        sinon.stub(BCrypt, "compareSync").resolves(true);
-        sinon.stub(Jwt, "sign").resolves(tokenMock.token);
-      })
+      describe('Quando coloca os dados corretamente', () => {
+        beforeEach(() => {
+          sinon.stub(User, "findOne").resolves(userMock as User);
+          sinon.stub(BCrypt, "compareSync").resolves(true);
+          sinon.stub(Jwt, "sign").resolves(tokenMock.token);
+        })
+  
+        afterEach(() => {
+          (User.findOne as sinon.SinonStub).restore();
+        })
 
-      afterEach(() => {
-        (User.findOne as sinon.SinonStub).restore();
-      })
-
-      it('Deve fazer o login com sucesso e retornar o status 200 com um token', async () => {
-        const response: Response = await chai.request(app).post('/login').send(loginMock)
-        expect(response.status).to.be.eq(200);
-        expect(response.body.token).to.be.eq(tokenMock.token);
+        it('Retorna o status 200 com um token', async () => {
+          const response: Response = await chai.request(app).post('/login').send(loginMock)
+          chai.expect(response.status).to.be.eq(200);
+          chai.expect(response.body.token).to.be.eq(tokenMock.token);
+        });
       });
 
-      // it('Verifica se o userService retorna um token', async () => {
-      //   const response: string = await userService.login(loginMock);
-      //   expect(response).to.be.eq(tokenMock.token);
-      // });
+      describe('Quando falta email ou senha', () => {
+        it('Se o email for inválido retorna um status 400 e uma messagem de erro', async () => {
+          const response: Response = await chai.request(app).post('/login').send({
+            email: '',
+            password: 'secret_admin'
+          })
+          chai.expect(response.status).to.be.eq(400);
+          chai.expect(response.body.message).to.be.eq('All fields must be filled');
+        });
+      });
 
       // it('Deve fazer o login com sucesso e retornar um token', async () => {
       //   const response: Response = await chai.request(app).post('/login').send(loginMock);

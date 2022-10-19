@@ -1,13 +1,12 @@
 import 'dotenv/config';
 
 import ILogin from '../interfaces/ILogin';
-import IUserService from '../interfaces/IUserService';
 import User from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import Jwt from './jwt.service';
 import BCrypt from './bcrypt.service';
 
-export default class UserService implements IUserService {
+export default class UserService {
   static getByEmail = async (userEmail: string): Promise<IUser | null> => {
     const result = await User.findOne({ where: { email: userEmail } });
     return result;

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import UserService from '../services/user.service';
 import UserController from '../controllers/user.controller';
+import loginMiddleware from '../middlewares/login.middleware';
 
 // const userController = require('../controllers/userController');
 // const userMiddleware = require('../middlewares/userMiddleware');
@@ -9,10 +9,9 @@ import UserController from '../controllers/user.controller';
 
 const userRouter = Router();
 
-const userService = new UserService();
-const userController = new UserController(userService);
+const userController = new UserController();
 
-userRouter.post('/', (req, res) => {
+userRouter.post('/', loginMiddleware, (req, res) => {
   userController.login(req, res);
 });
 userRouter.get('/');
