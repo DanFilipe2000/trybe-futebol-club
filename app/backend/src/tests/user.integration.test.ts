@@ -9,6 +9,7 @@ import User from '../database/models/user.model';
 import { Response } from 'superagent';
 import Jwt from '../services/jwt.service';
 import BCrypt from '../services/bcrypt.service';
+import UserService from '../services/user.service';
 
 chai.use(chaiHttp);
 
@@ -87,6 +88,12 @@ describe('userTests', () => {
       });
 
       describe('Quando o email e senha informados são inválidos', () => {
+        beforeEach(() => {
+          sinon.restore();
+          sinon.stub(BCrypt, 'compareSync').resolves(false);
+          sinon.stub(User, 'findOne').resolves(null);
+        })
+
         it('Se o email for inválido retorna um status 401 e uma messagem de erro', async () => {
           const response: Response = await chai.request(app).post('/login').send({
             email: 'abcde',
@@ -101,9 +108,23 @@ describe('userTests', () => {
             email: 'admin@admin.com',
             password: '123456'
           })
-          console.log(response);
           chai.expect(response.status).to.be.eq(401);
           chai.expect(response.body.message).to.be.eq('Incorrect email or password');
+        })
+      })
+
+      describe('/login/validate', () => {
+        const userService = new UserService();
+        beforeEach(() => { 
+          sinon.restore();
+          sinon.stub(Jwt, 'validate').resolves('admin');
+        })
+        describe('Quando a rota é acessada retorna a role da pessoa usuária', () => {
+          it('Retorna a role com sucesso', async () => {
+            const response: Response =  await chai.request(app).get('/login/validate').set("authorization", "any-token");
+            chai.expect(response.status).to.be.eq(200);
+            chai.expect(response.body.role).to.be.eq('admin');
+          })
         })
       })
 

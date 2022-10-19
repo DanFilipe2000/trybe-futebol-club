@@ -17,9 +17,12 @@ export default class UserController {
       }
       // Tipando err, fonte: https://stackoverflow.com/questions/69021040/why-catch-clause-variable-type-annotation-must-be-any
     }
-
-    // const { email, password } = req.body;
-    // const result = await this.userService.login({ email, password } as ILogin);
-    // res.status(200).json({ token: result });
   }
+
+  public role = async (req: Request, res: Response): Promise<void> => {
+    const { authorization } = req.headers;
+    const role: string = await this.userService.validate(authorization || '');
+    // Colocando somente a authorization como parametro retorna um erro corrigi com a seguinte fonte: https://stackoverflow.com/questions/54496398/typescript-type-string-undefined-is-not-assignable-to-type-string
+    res.status(200).json({ role });
+  };
 }

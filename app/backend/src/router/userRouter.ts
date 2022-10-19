@@ -15,7 +15,6 @@ const loginMiddleware = new LoginMiddleware();
 userRouter.post('/', loginMiddleware.validate, (req, res) => {
   userController.login(req, res);
 });
-userRouter.get('/');
-userRouter.get('/:id');
+userRouter.get('/validate', (req, res) => { userController.role(req, res); });
 
 export default userRouter;
