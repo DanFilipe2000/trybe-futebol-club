@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 
-const loginMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const { email, password } = req.body;
+export default class LoginMiddleware {
+  public validate = (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    res.status(400).json({ message: 'All fields must be filled' });
-  } else {
+    if (!email || !password) {
+      return res.status(400).json({ message: 'All fields must be filled' });
+    }
+
     next();
-  }
-};
-
-export default loginMiddleware;
+  };
+}

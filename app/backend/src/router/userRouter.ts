@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controller';
-import loginMiddleware from '../middlewares/login.middleware';
+import LoginMiddleware from '../middlewares/login.middleware';
 
 // const userController = require('../controllers/userController');
 // const userMiddleware = require('../middlewares/userMiddleware');
@@ -10,8 +10,9 @@ import loginMiddleware from '../middlewares/login.middleware';
 const userRouter = Router();
 
 const userController = new UserController();
+const loginMiddleware = new LoginMiddleware();
 
-userRouter.post('/', loginMiddleware, (req, res) => {
+userRouter.post('/', loginMiddleware.validate, (req, res) => {
   userController.login(req, res);
 });
 userRouter.get('/');
