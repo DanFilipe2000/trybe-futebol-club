@@ -76,7 +76,7 @@ describe('userTests', () => {
       });
 
       describe('Quando falta email ou senha', () => {
-        it('Se o email for inválido retorna um status 400 e uma messagem de erro', async () => {
+        it('Se o email não for informado retorna um status 400 e uma messagem de erro', async () => {
           const response: Response = await chai.request(app).post('/login').send({
             email: '',
             password: 'secret_admin'
@@ -85,6 +85,27 @@ describe('userTests', () => {
           chai.expect(response.body.message).to.be.eq('All fields must be filled');
         });
       });
+
+      describe('Quando o email e senha informados são inválidos', () => {
+        it('Se o email for inválido retorna um status 401 e uma messagem de erro', async () => {
+          const response: Response = await chai.request(app).post('/login').send({
+            email: 'abcde',
+            password: 'secret_admin'
+          })
+          chai.expect(response.status).to.be.eq(401);
+          chai.expect(response.body.message).to.be.eq('Incorrect email or password');
+        })
+
+        it('Se a senha for inválida retorna um status 401 e uma messagem de erro', async () => {
+          const response: Response = await chai.request(app).post('/login').send({
+            email: 'admin@admin.com',
+            password: '123456'
+          })
+          console.log(response);
+          chai.expect(response.status).to.be.eq(401);
+          chai.expect(response.body.message).to.be.eq('Incorrect email or password');
+        })
+      })
 
       // it('Deve fazer o login com sucesso e retornar um token', async () => {
       //   const response: Response = await chai.request(app).post('/login').send(loginMock);

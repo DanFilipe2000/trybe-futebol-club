@@ -5,6 +5,7 @@ import User from '../database/models/user.model';
 import IUser from '../interfaces/IUser';
 import Jwt from './jwt.service';
 import BCrypt from './bcrypt.service';
+import CustomError from '../error/customError';
 
 export default class UserService {
   static getByEmail = async (userEmail: string): Promise<IUser | null> => {
@@ -16,13 +17,13 @@ export default class UserService {
     const user: IUser | null = await UserService.getByEmail(email);
 
     if (!user) {
-      return 'User not exists';
+      throw new CustomError(401, 'Incorrect email or password');
     }
 
     const bcrypt = BCrypt.compareSync(password, user.password);
 
     if (bcrypt === false) {
-      return 'Não autorizado';
+      throw new CustomError(401, 'Incorrect email or password');
     }
 
     const { username } = user;
