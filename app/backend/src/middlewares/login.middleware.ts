@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import CustomError from '../error/customError';
+// import CustomError from '../error/customError';
 
 export default class LoginMiddleware {
   public validate = (req: Request, res: Response, next: NextFunction) => {
@@ -16,8 +16,7 @@ export default class LoginMiddleware {
     const { authorization } = req.headers;
 
     if (!authorization) {
-      const error = new CustomError(400, 'Invalid Token');
-      return res.status(error.status).json({ message: error.message });
+      return res.status(400).json({ message: 'Invalid Token' });
     }
 
     next();

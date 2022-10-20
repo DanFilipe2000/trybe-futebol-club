@@ -14,4 +14,10 @@ export default class MatchesController {
     const result = await this.matchesService.create(req.body);
     res.status(201).json(result);
   };
+
+  public patch = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await this.matchesService.update(id);
+    res.status(200).json({ message: result });
+  };
 }

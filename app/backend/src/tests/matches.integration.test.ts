@@ -78,5 +78,21 @@ describe('teamsTest', () => {
         chai.expect(response.status).to.be.eq(201);
       }) 
     })
+    describe('Na rota /matches com o método PATCH retorna status 200 com a messagem Finished', () => {
+      beforeEach(() => {
+        sinon.restore();
+        sinon.stub(Match, 'create').resolves(newMatchMock as Match);
+      })
+      it('Retorna os times com sucesso', async () => {
+        const response = await chai.request(app).post('/matches').send({
+          homeTeam: 16,
+          awayTeam: 8,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+        chai.expect(response.status).to.be.eq(201);
+      }) 
+    })
   })
 })

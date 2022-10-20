@@ -27,4 +27,13 @@ export default class MatchesService {
     const create = await Match.create({ ...body, inProgress: true });
     return create;
   };
+
+  public update = async (id: string) => {
+    await Match.update(
+      { inProgress: false },
+      { where: { id } },
+    );
+
+    return 'Finished';
+  };
 }
