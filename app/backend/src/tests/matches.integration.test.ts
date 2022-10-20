@@ -12,6 +12,8 @@ import { app } from '../app';
 // import UserService from '../services/user.service';
 import Match from '../database/models/match.model';
 import matchesMock from './mock/matches.mock';
+import Jwt from '../services/jwt.service';
+import UserService from '../services/user.service';
 
 chai.use(chaiHttp);
 
@@ -24,6 +26,10 @@ const newMatchMock = {
 	homeTeamGoals: 2,
 	awayTeamGoals: 2,
 	inProgress: true
+}
+
+const tokenMock = {
+  token: 'any-token'
 }
 
 describe('teamsTest', () => {
@@ -73,25 +79,18 @@ describe('teamsTest', () => {
           awayTeam: 8,
           homeTeamGoals: 2,
           awayTeamGoals: 2,
-          inProgress: true
-        });
+        }).set("authorization", "any-token");
+        console.log(response);
         chai.expect(response.status).to.be.eq(201);
       }) 
     })
     describe('Na rota /matches com o método PATCH retorna status 200 com a messagem Finished', () => {
       beforeEach(() => {
         sinon.restore();
-        sinon.stub(Match, 'create').resolves(newMatchMock as Match);
       })
       it('Retorna os times com sucesso', async () => {
-        const response = await chai.request(app).post('/matches').send({
-          homeTeam: 16,
-          awayTeam: 8,
-          homeTeamGoals: 2,
-          awayTeamGoals: 2,
-          inProgress: true
-        });
-        chai.expect(response.status).to.be.eq(201);
+        const response = await chai.request(app).patch('/matches/4/finish');
+        chai.expect(response.status).to.be.eq(200);
       }) 
     })
   })
