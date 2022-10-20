@@ -1,15 +1,17 @@
 import { Router } from 'express';
 import MatchesController from '../controllers/matches.controller';
-
-// import LoginMiddleware from '../middlewares/login.middleware';
+import LoginMiddleware from '../middlewares/login.middleware';
 
 const matchesRouter = Router();
 
 const matchesController = new MatchesController();
-// const teamsMiddleware = new LoginMiddleware();
+const tokenMiddleware = new LoginMiddleware();
 
 matchesRouter.get('/', (req, res) => {
   matchesController.get(req, res);
+});
+matchesRouter.post('/', tokenMiddleware.validateToken, (req, res) => {
+  matchesController.post(req, res);
 });
 // matchesRouter.get('/:id', (req, res) => { matchesController.getById(req, res); });
 

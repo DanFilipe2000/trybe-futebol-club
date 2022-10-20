@@ -12,12 +12,19 @@ import { app } from '../app';
 // import UserService from '../services/user.service';
 import Match from '../database/models/match.model';
 import matchesMock from './mock/matches.mock';
-import IMatches from '../interfaces/IMatches';
-import MatchesService from '../services/matches.service';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
+
+const newMatchMock = {
+	id: 49,
+	homeTeam: 16,
+	awayTeam: 8,
+	homeTeamGoals: 2,
+	awayTeamGoals: 2,
+	inProgress: true
+}
 
 describe('teamsTest', () => {
   /**
@@ -51,8 +58,24 @@ describe('teamsTest', () => {
         sinon.stub(Match, 'findAll').resolves(matchesMock as unknown as Match[]);
       })
       it('Retorna os times com sucesso', async () => {
-        const response = await chai.request(app).get('/teams');
+        const response = await chai.request(app).get('/matches');
         chai.expect(response.status).to.be.eq(200);
+      }) 
+    })
+    describe('Na rota /matches com o método POST retorna a partida criada com o status 201', () => {
+      beforeEach(() => {
+        sinon.restore();
+        sinon.stub(Match, 'create').resolves(newMatchMock as Match);
+      })
+      it('Retorna os times com sucesso', async () => {
+        const response = await chai.request(app).post('/matches').send({
+          homeTeam: 16,
+          awayTeam: 8,
+          homeTeamGoals: 2,
+          awayTeamGoals: 2,
+          inProgress: true
+        });
+        chai.expect(response.status).to.be.eq(201);
       }) 
     })
   })

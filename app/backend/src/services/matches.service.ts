@@ -22,4 +22,9 @@ export default class MatchesService {
 
     return matches;
   };
+
+  public create = async (body: Match) => {
+    const create = await Match.create({ ...body, inProgress: true });
+    return create;
+  };
 }
