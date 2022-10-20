@@ -72,6 +72,7 @@ describe('teamsTest', () => {
       beforeEach(() => {
         sinon.restore();
         sinon.stub(Match, 'create').resolves(newMatchMock as Match);
+        sinon.stub(Jwt, "sign").resolves(tokenMock.token);
       })
       it('Retorna os times com sucesso', async () => {
         const response = await chai.request(app).post('/matches').send({
@@ -80,7 +81,6 @@ describe('teamsTest', () => {
           homeTeamGoals: 2,
           awayTeamGoals: 2,
         }).set("authorization", "any-token");
-        console.log(response);
         chai.expect(response.status).to.be.eq(201);
       }) 
     })
