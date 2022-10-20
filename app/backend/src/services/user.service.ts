@@ -27,16 +27,25 @@ export default class UserService {
       throw new CustomError(401, 'Incorrect email or password');
     }
 
-    const { role } = user;
+    const { id, role } = user;
     const secret = process.env.JWT_SECRET || '';
-    const token = Jwt.sign({ data: { role } } as ICustomPayload, secret, { expiresIn: '1d' });
+    const token = Jwt.sign(
+      { data: { userId: id, role } } as ICustomPayload,
+      secret,
+      { expiresIn: '1d' },
+    );
 
     return token;
   };
 
-  public validate = async (authorization: string): Promise<string> => {
+  public validate = async (authorization: string) => {
     const secret = process.env.JWT_SECRET || '';
-    const role = Jwt.validate(authorization, secret);
-    return role;
+    const data = Jwt.validate(authorization, secret);
+    return data;
+  };
+
+  public findByPk = async (id: string | number) => {
+    const result = await User.findByPk(id);
+    return result;
   };
 }

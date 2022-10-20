@@ -21,7 +21,7 @@ export default class UserController {
 
   public role = async (req: Request, res: Response): Promise<void> => {
     const { authorization } = req.headers;
-    const role: string = await this.userService.validate(authorization || '');
+    const { role } = await this.userService.validate(authorization || '');
     // Colocando somente a authorization como parametro retorna um erro corrigi com a seguinte fonte: https://stackoverflow.com/questions/54496398/typescript-type-string-undefined-is-not-assignable-to-type-string
     res.status(200).json({ role });
   };

@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
+import UserService from '../services/user.service';
 import TeamsService from '../services/teams.service';
 // import CustomError from '../error/customError';
 
 export default class MatchesMiddleware {
-  constructor(private teamsService = new TeamsService()) {}
+  constructor(
+    private teamsService = new TeamsService(),
+    private userService = new UserService(),
+  ) {}
 
   public validateTeams = (req: Request, res: Response, next: NextFunction) => {
     const { homeTeam, awayTeam } = req.body;
@@ -17,11 +21,24 @@ export default class MatchesMiddleware {
     next();
   };
 
-  public validateToken = (req: Request, res: Response, next: NextFunction) => {
+  public validateToken = async (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
 
+    const tokenError = 'Token must be a valid token';
+
     if (!authorization) {
-      return res.status(400).json({ message: 'Token must be a valid token' });
+      return res.status(401).json({ message: tokenError });
+    }
+
+    try {
+      const { userId } = await this.userService.validate(authorization);
+      const user = await this.userService.findByPk(userId);
+
+      if (!user) {
+        return res.status(401).json({ message: tokenError });
+      }
+    } catch (error) {
+      return res.status(401).json({ message: tokenError });
     }
 
     next();

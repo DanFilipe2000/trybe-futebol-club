@@ -8,8 +8,7 @@ export default class Jwt {
   };
 
   static validate = (token: string, secret: jwt.Secret) => {
-    const payload = jwt.verify(token, secret) as ICustomPayload;
-    const { data } = payload;
-    return data.role;
+    const { data } = jwt.verify(token, secret) as ICustomPayload;
+    return data;
   };
 }
