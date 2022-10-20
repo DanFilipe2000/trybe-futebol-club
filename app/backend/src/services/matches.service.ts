@@ -36,4 +36,11 @@ export default class MatchesService {
 
     return 'Finished';
   };
+
+  public updateGoals = async (id: string, homeTeamGoals: number, awayTeamGoals: number) => {
+    await Match.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id } },
+    );
+  };
 }

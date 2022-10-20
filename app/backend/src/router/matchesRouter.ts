@@ -7,6 +7,9 @@ const matchesRouter = Router();
 const matchesController = new MatchesController();
 const matchesMiddleware = new MatchesMiddleware();
 
+matchesRouter.patch('/:id', (req, res) => {
+  matchesController.updateGoals(req, res);
+});
 matchesRouter.patch('/:id/finish', (req, res) => {
   matchesController.patch(req, res);
 });
