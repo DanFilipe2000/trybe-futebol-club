@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 // import CustomError from '../error/customError';
-// import ILogin from '../interfaces/ILogin';
 import TeamsService from '../services/teams.service';
 
 export default class TeamsController {
