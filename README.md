@@ -1,10 +1,18 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+**Sobre**
+
+Projeto feito com typescript criado durante o curso da Trybe. O intuito é por em prática os aprendizados criando uma API para popular o frontend de uma aplicação que mostra partidas de futebol, placar e o andamento do jogo.
+
+**Como rodar o projeto**
+
+Primeiro clone o projeto na sua máquina:
+```
+git clone https://github.com/DanFilipe2000/trybe-futebol-club.git
+```
+Baixe as dependências:
+```
+npm install
+```
+Rode o projeto:
+```
+npm run dev
+```
